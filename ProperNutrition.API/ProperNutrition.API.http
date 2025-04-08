@@ -1,0 +1,6 @@
+@ProperNutrition.API_HostAddress = http://localhost:5268
+
+GET {{ProperNutrition.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
