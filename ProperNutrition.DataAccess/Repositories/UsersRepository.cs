@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProperNutrition.DataAccess.Entities;
 using ProperNutrition.DataAccess.Mappers;
-using ProperNutrition.Domain.Abstractions;
 using ProperNutrition.Domain.Models;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using ProperNutrition.Domain.Models;
 
-namespace ProperNutrition.Domain.Abstractions
+namespace ProperNutrition.DataAccess.Repositories
 {
     public interface IProductsRepository
     {
