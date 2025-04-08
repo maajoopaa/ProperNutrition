@@ -5,6 +5,12 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProperNutrition.API", "ProperNutrition.API\ProperNutrition.API.csproj", "{0E2B5500-6AE0-465C-82F7-13904E35529B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProperNutrition.DataAccess", "ProperNutrition.DataAccess\ProperNutrition.DataAccess.csproj", "{4739BC32-26A3-400B-8D4F-347E8B7E42A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProperNutrition.Domain", "ProperNutrition.Domain\ProperNutrition.Domain.csproj", "{EBF5538B-E913-4C39-8F33-2240CB8C6B7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProperNutrition.Application", "ProperNutrition.Application\ProperNutrition.Application.csproj", "{DF7485AB-BF19-456F-ADA2-42EABA37ECB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{0E2B5500-6AE0-465C-82F7-13904E35529B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E2B5500-6AE0-465C-82F7-13904E35529B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E2B5500-6AE0-465C-82F7-13904E35529B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4739BC32-26A3-400B-8D4F-347E8B7E42A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4739BC32-26A3-400B-8D4F-347E8B7E42A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4739BC32-26A3-400B-8D4F-347E8B7E42A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4739BC32-26A3-400B-8D4F-347E8B7E42A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF5538B-E913-4C39-8F33-2240CB8C6B7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF5538B-E913-4C39-8F33-2240CB8C6B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF5538B-E913-4C39-8F33-2240CB8C6B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF5538B-E913-4C39-8F33-2240CB8C6B7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF7485AB-BF19-456F-ADA2-42EABA37ECB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF7485AB-BF19-456F-ADA2-42EABA37ECB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF7485AB-BF19-456F-ADA2-42EABA37ECB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF7485AB-BF19-456F-ADA2-42EABA37ECB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
