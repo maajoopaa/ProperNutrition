@@ -21,6 +21,26 @@ namespace ProperNutrition.Application.Services
             _dishesRepository = dishesRepository;
         }
 
+        public async Task<List<Dish>> GetPopularListAsync()
+        {
+            try
+            {
+                var dishes = (await _dishesRepository.GetAllAsync())!
+                    .OrderByDescending(d => d.LikedBy.Count)
+                    .ToList();
+
+                if(dishes is not null)
+                {
+                    return dishes.Select(DishMapper.ToDomain).Take(dishes.Count < 5 ? dishes.Count : 5).ToList();
+                }
+
+                return [];
+            }
+            catch
+            {
+                return [];
+            }
+        }
         public async Task<Dish?> GetAsync(Guid id)
         {
             try

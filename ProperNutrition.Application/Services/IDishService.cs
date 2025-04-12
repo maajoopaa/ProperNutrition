@@ -13,5 +13,6 @@ namespace ProperNutrition.Application.Services
         Task<List<Dish>> GetLessCaloritAsync();
         Task<List<Dish>> SearchAsync(string query);
         Task<string> UpdateAsync(Guid id, DishRequest model);
+        Task<List<Dish>> GetPopularListAsync();
     }
 }
