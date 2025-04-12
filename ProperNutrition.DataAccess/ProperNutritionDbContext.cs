@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProperNutrition.DataAccess.Configurations;
-using ProperNutrition.DataAccess.Entities;
+using ProperNutrition.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,9 @@ namespace ProperNutrition.DataAccess
 {
     public class ProperNutritionDbContext : DbContext
     {
+        public ProperNutritionDbContext(DbContextOptions<ProperNutritionDbContext> options)
+            :base(options) { }
+
         public DbSet<UserEntity> Users { get; set; }
 
         public DbSet<ArticleEntity> Articles { get; set; }
