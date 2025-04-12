@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProperNutrition.Application.Models;
@@ -48,6 +49,7 @@ namespace ProperNutrition.API.Controllers
 
         [HttpPost]
         [Route("add")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody] ProductRequest model)
         {
             try
@@ -65,6 +67,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpPut("update/{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ProductRequest model)
         {
             try
@@ -82,6 +85,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpDelete("delete/{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var error = await _productService.DeleteAsync(id);

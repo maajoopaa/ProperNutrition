@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProperNutrition.Application.Models;
@@ -25,6 +26,15 @@ namespace ProperNutrition.API.Controllers
         public async Task<IActionResult> GetList()
         {
             var dishes = await _dishService.GetAllAsync();
+
+            return dishes is not null ? Ok(dishes) : BadRequest();
+        }
+
+        [HttpGet]
+        [Route("get-popular-list")]
+        public async Task<IActionResult> GetPopularList()
+        {
+            var dishes = await _dishService.GetPopularListAsync();
 
             return dishes is not null ? Ok(dishes) : BadRequest();
         }
@@ -58,6 +68,7 @@ namespace ProperNutrition.API.Controllers
 
         [HttpPost]
         [Route("add")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody] DishRequest model)
         {
             try
@@ -77,6 +88,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpPut("update/{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DishRequest model)
         {
             try
@@ -94,6 +106,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpDelete("delete/{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var error = await _dishService.DeleteAsync(id);

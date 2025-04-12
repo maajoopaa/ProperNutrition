@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProperNutrition.Application.Services;
 
@@ -6,6 +7,7 @@ namespace ProperNutrition.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class FavouriteController : ControllerBase
     {
         private readonly IFavouriteService _favouriteService;
