@@ -1,13 +1,13 @@
-﻿using ProperNutrition.Domain.Models;
+﻿using ProperNutrition.Domain.Entities;
 
 namespace ProperNutrition.DataAccess.Repositories
 {
     public interface IUsersRepository
     {
-        Task AddAsync(User user);
-        Task DeleteAsync(User user);
-        Task<List<User>?> GetAllAsync();
-        Task<User?> GetAsync(Guid id);
-        Task UpdateAsync(User user);
+        Task AddAsync(UserEntity userEntity);
+        Task DeleteAsync(UserEntity userEntity);
+        Task<List<UserEntity>> GetAllAsync();
+        Task<UserEntity?> GetAsync(Guid id);
+        Task UpdateAsync(UserEntity userEntity);
     }
 }

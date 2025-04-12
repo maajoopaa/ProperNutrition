@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProperNutrition.DataAccess.Mappers;
+using ProperNutrition.Domain.Entities;
 using ProperNutrition.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProperNutrition.DataAccess.Repositories
 {
@@ -18,49 +13,43 @@ namespace ProperNutrition.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<Article?> GetAsync(Guid id)
+        public async Task<ArticleEntity?> GetAsync(Guid id)
         {
-            var articleEntity = await _context.Articles
-                .AsNoTracking()
-                .FirstOrDefaultAsync(ae => ae.Id == id);
-
-            return articleEntity is null ? null : ArticleMapper.ToDomain(articleEntity);
+            return await _context.Articles
+                .FindAsync(id);
         }
 
-        public async Task<List<Article>?> GetAllAsync()
+        public async Task<List<ArticleEntity>?> GetAllAsync()
         {
-            var articleEntities = await _context.Articles
-                .AsNoTracking()
+            return await _context.Articles
                 .ToListAsync();
-
-            return articleEntities.Select(ArticleMapper.ToDomain).ToList();
         }
 
-        public async Task AddAsync(Article article)
+        public async Task AddAsync(ArticleEntity entity)
         {
-            var articleEntity = ArticleMapper.ToEntity(article);
+            await _context.Articles
+                .AddAsync(entity);
 
-            _context.Articles.Add(articleEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Article article)
+        public async Task UpdateAsync(ArticleEntity entity)
         {
-            var articleEntity = ArticleMapper.ToEntity(article);
+            _context.Articles
+                .Update(entity);
 
-            _context.Articles.Update(articleEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Article article)
+        public async Task DeleteAsync(ArticleEntity entity)
         {
-            var articleEntity = ArticleMapper.ToEntity(article);
+            _context.Articles
+                .Remove(entity);
 
-            _context.Articles.Remove(articleEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
     }
 }

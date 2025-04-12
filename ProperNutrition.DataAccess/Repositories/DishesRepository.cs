@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProperNutrition.DataAccess.Mappers;
-using ProperNutrition.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProperNutrition.Domain.Entities;
 
 namespace ProperNutrition.DataAccess.Repositories
 {
@@ -18,48 +12,43 @@ namespace ProperNutrition.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<Dish?> GetAsync(Guid id)
+        public async Task<DishEntity?> GetAsync(Guid id)
         {
-            var dishEntity = await _context.Dishes
-                .AsNoTracking()
-                .FirstOrDefaultAsync(d => d.Id == id);
-
-            return dishEntity is null ? null : DishMapper.ToDomain(dishEntity);
+            return await _context.Dishes
+                .FindAsync(id);
         }
 
-        public async Task<List<Dish>?> GetAllAsync()
+        public async Task<List<DishEntity>?> GetAllAsync()
         {
-            var dishEntities = await _context.Dishes
+            return await _context.Dishes
                 .ToListAsync();
-
-            return dishEntities.Select(DishMapper.ToDomain).ToList();
         }
 
-        public async Task AddAsync(Dish dish)
+        public async Task AddAsync(DishEntity entity)
         {
-            var dishEntity = DishMapper.ToEntity(dish);
+            await _context.Dishes
+                .AddAsync(entity);
 
-            _context.Dishes.Add(dishEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Dish dish)
+        public async Task UpdateAsync(DishEntity entity)
         {
-            var dishEntity = DishMapper.ToEntity(dish);
+            _context.Dishes
+                .Update(entity);
 
-            _context.Dishes.Update(dishEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
 
-        public async Task RemoveAsync(Dish dish)
+        public async Task DeleteAsync(DishEntity entity)
         {
-            var dishEntity = DishMapper.ToEntity(dish);
+            _context.Dishes
+                .Remove(entity);
 
-            _context.Dishes.Remove(dishEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
     }
 }

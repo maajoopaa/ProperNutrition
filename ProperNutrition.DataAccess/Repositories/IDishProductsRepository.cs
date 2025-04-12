@@ -1,13 +1,13 @@
-﻿using ProperNutrition.Domain.Models;
+﻿using ProperNutrition.Domain.Entities;
 
 namespace ProperNutrition.DataAccess.Repositories
 {
     public interface IDishProductsRepository
     {
-        Task AddAsync(DishProduct dishProduct);
-        Task<DishProduct?> GetAsync(Guid dishId, Guid productId);
-        Task<List<DishProduct>> GetByDishAsync(Guid dishId);
-        Task RemoveAsync(Guid dishId, Guid productId);
-        Task UpdateAsync(DishProduct dishProduct);
+        Task AddAsync(DishProductEntity entity);
+        Task DeleteAsync(DishProductEntity entity);
+        Task<List<DishProductEntity>?> GetAllAsync();
+        Task<DishProductEntity?> GetAsync(Guid dishId, Guid productId);
+        Task UpdateAsync(DishProductEntity entity);
     }
 }

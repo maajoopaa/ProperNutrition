@@ -1,12 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProperNutrition.DataAccess.Entities;
-using ProperNutrition.DataAccess.Mappers;
-using ProperNutrition.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProperNutrition.Domain.Entities;
 
 namespace ProperNutrition.DataAccess.Repositories
 {
@@ -19,59 +12,43 @@ namespace ProperNutrition.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<User?> GetAsync(Guid id)
+        public async Task<UserEntity?> GetAsync(Guid id)
         {
-            var userEntity = await _context.Users
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(ue => ue.Id == id);
-
-            if (userEntity is not null)
-            {
-                return UserMapper.ToDomain(userEntity);
-            }
-
-            return null;
+            return await _context.Users
+                .FindAsync(id);
         }
 
-        public async Task<List<User>?> GetAllAsync()
+        public async Task<List<UserEntity>> GetAllAsync()
         {
-            var userEntities = await _context.Users
-                    .AsNoTracking()
-                    .ToListAsync();
-
-            if (userEntities is not null)
-            {
-                return userEntities.Select(UserMapper.ToDomain).ToList();
-            }
-
-            return null;
+            return await _context.Users
+                .ToListAsync();
         }
 
-        public async Task AddAsync(User user)
+        public async Task AddAsync(UserEntity userEntity)
         {
-            var userEntity = UserMapper.ToEntity(user);
+            await _context.Users
+                .AddAsync(userEntity);
 
-            _context.Users.Add(userEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateAsync(UserEntity userEntity)
         {
-            var userEntity = UserMapper.ToEntity(user);
+            _context.Users
+                .Update(userEntity);
 
-            _context.Users.Update(userEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(User user)
+        public async Task DeleteAsync(UserEntity userEntity)
         {
-            var userEntity = UserMapper.ToEntity(user);
+            _context.Users
+                .Remove(userEntity);
 
-            _context.Users.Remove(userEntity);
-
-            await _context.SaveChangesAsync();
+            await _context
+                .SaveChangesAsync();
         }
     }
 }

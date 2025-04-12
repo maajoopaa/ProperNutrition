@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProperNutrition.DataAccess.Mappers;
-using ProperNutrition.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProperNutrition.Domain.Entities;
 
 namespace ProperNutrition.DataAccess.Repositories
 {
@@ -18,50 +12,38 @@ namespace ProperNutrition.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<DishProduct?> GetAsync(Guid dishId, Guid productId)
+        public async Task<DishProductEntity?> GetAsync(Guid dishId, Guid productId)
         {
-            var entity = await _context.DishProducts
-                .FirstOrDefaultAsync(dp => dp.DishId == dishId && dp.ProductId == productId);
-
-            return entity is null ? null : DishProductMapper.ToDomain(entity);
+            return await _context.DishProducts
+                .FindAsync(dishId, productId);
         }
 
-        public async Task<List<DishProduct>> GetByDishAsync(Guid dishId)
+        public async Task<List<DishProductEntity>?> GetAllAsync()
         {
-            var entities = await _context.DishProducts
-                .Where(dp => dp.DishId == dishId)
+            return await _context.DishProducts
                 .ToListAsync();
-
-            return entities.Select(DishProductMapper.ToDomain).ToList();
         }
 
-        public async Task AddAsync(DishProduct dishProduct)
+        public async Task AddAsync(DishProductEntity entity)
         {
-            var entity = DishProductMapper.ToEntity(dishProduct);
-
-            _context.DishProducts.Add(entity);
+            await _context.DishProducts
+                .AddAsync(entity);
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveAsync(Guid dishId, Guid productId)
+        public async Task UpdateAsync(DishProductEntity entity)
         {
-            var entity = await _context.DishProducts
-                .FirstOrDefaultAsync(dp => dp.DishId == dishId && dp.ProductId == productId);
+            _context.DishProducts
+                .Update(entity);
 
-            if (entity != null)
-            {
-                _context.DishProducts.Remove(entity);
-
-                await _context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(DishProduct dishProduct)
+        public async Task DeleteAsync(DishProductEntity entity)
         {
-            var entity = DishProductMapper.ToEntity(dishProduct);
-
-            _context.DishProducts.Update(entity);
+            _context.DishProducts
+                .Remove(entity);
 
             await _context.SaveChangesAsync();
         }
