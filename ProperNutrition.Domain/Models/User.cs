@@ -14,7 +14,7 @@ namespace ProperNutrition.Domain.Models
 
         public string Email { get; set; } = null!;
 
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; set; } = false;
 
         public List<Dish> CreatedDishes { get; set; } = new();
 
