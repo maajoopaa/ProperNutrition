@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProperNutrition.DataAccess.Entities;
+using ProperNutrition.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +15,12 @@ namespace ProperNutrition.DataAccess.Configurations
         {
             builder.HasKey(a => a.Id);
 
-            //max length change
             builder.Property(a => a.Head)
-                .HasMaxLength(23)
+                .HasMaxLength(30)
                 .IsRequired();
 
-            //max length change
             builder.Property(a => a.Body)
-                .HasMaxLength(23)
+                .HasMaxLength(150)
                 .IsRequired();
         }
     }
