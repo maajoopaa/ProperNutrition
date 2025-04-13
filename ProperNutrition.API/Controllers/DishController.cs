@@ -68,7 +68,7 @@ namespace ProperNutrition.API.Controllers
 
         [HttpPost]
         [Route("add")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Add([FromBody] DishRequest model)
         {
             try
@@ -88,7 +88,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpPut("update/{id:guid}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] DishRequest model)
         {
             try
@@ -106,7 +106,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpDelete("delete/{id:guid}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             var error = await _dishService.DeleteAsync(id);
