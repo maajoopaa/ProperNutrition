@@ -8,7 +8,7 @@ namespace ProperNutrition.Application.Models
 
         public string Description { get; set; } = null!;
 
-        public IFormFile Image { get; set; } = null!;
+        public string Image { get; set; } = null!;
 
         public double Calories { get; set; } = 0;
 

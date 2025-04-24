@@ -8,6 +8,6 @@ namespace ProperNutrition.Application.Models
 
         public string Body { get; set; } = null!;
 
-        public IFormFile? Image { get; set; }
+        public string? Image { get; set; }
     }
 }
