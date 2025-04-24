@@ -9,7 +9,7 @@ using System.Security.Claims;
 namespace ProperNutrition.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/dish")]
     public class DishController : ControllerBase
     {
         private readonly IValidator<DishRequest> _validator;
@@ -22,7 +22,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-list")]
+        [Route("list")]
         public async Task<IActionResult> GetList()
         {
             var dishes = await _dishService.GetAllAsync();
@@ -31,7 +31,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-popular-list")]
+        [Route("popular-list")]
         public async Task<IActionResult> GetPopularList()
         {
             var dishes = await _dishService.GetPopularListAsync();
@@ -40,7 +40,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-sort-list")]
+        [Route("sort-list")]
         public async Task<IActionResult> GetSortList()
         {
             var dishes = await _dishService.GetLessCaloritAsync();
@@ -48,14 +48,13 @@ namespace ProperNutrition.API.Controllers
             return dishes is not null ? Ok(dishes) : BadRequest();
         }
 
-        [HttpGet("get-dish/{id:guid}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetDish(Guid id)
         {
             var dish = await _dishService.GetAsync(id);
 
-            var cpfc = await _dishService.CalculateCPFC(id);
 
-            return dish is not null ? Ok(new { dish, cpfc }) : BadRequest();
+            return dish is not null ? Ok(dish) : BadRequest();
         }
 
         [HttpGet("search/{query}")]
@@ -66,9 +65,8 @@ namespace ProperNutrition.API.Controllers
             return dish is not null ? Ok(dish) : BadRequest();
         }
 
-        [HttpPost]
-        [Route("add")]
         [Authorize]
+        [HttpPost("")]
         public async Task<IActionResult> Add([FromBody] DishRequest model)
         {
             try
@@ -87,8 +85,8 @@ namespace ProperNutrition.API.Controllers
             return string.IsNullOrEmpty(error) ? Ok("Добавление блюда прошло успешно!") : BadRequest(error);
         }
 
-        [HttpPut("update/{id:guid}")]
         [Authorize]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DishRequest model)
         {
             try
@@ -105,8 +103,8 @@ namespace ProperNutrition.API.Controllers
             return string.IsNullOrEmpty(error) ? Ok("Обновление блюда прошло успешно!") : BadRequest(error);
         }
 
-        [HttpDelete("delete/{id:guid}")]
         [Authorize]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var error = await _dishService.DeleteAsync(id);

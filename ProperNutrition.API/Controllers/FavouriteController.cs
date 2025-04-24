@@ -6,7 +6,7 @@ using ProperNutrition.Application.Services;
 namespace ProperNutrition.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/favourite")]
     [Authorize]
     public class FavouriteController : ControllerBase
     {
@@ -17,8 +17,9 @@ namespace ProperNutrition.API.Controllers
             _favouriteService = favouriteService;
         }
 
+        [Authorize]
         [HttpGet]
-        [Route("get-list")]
+        [Route("list")]
         public async Task<IActionResult> GetList()
         {
             var userId = GetUserId();
@@ -28,24 +29,15 @@ namespace ProperNutrition.API.Controllers
             return favourite is not null ? Ok(favourite) : BadRequest();
         }
 
-        [HttpPost("like/{dishId:guid}")]
+        [Authorize]
+        [HttpPost("{dishId:guid}/like")]
         public async Task<IActionResult> Like(Guid dishId)
         {
             var userId = GetUserId();
 
             var error = await _favouriteService.LikeAsync(userId, dishId);
 
-            return string.IsNullOrEmpty(error) ? Ok("Блюдо успешно добавлено в избранное!") : BadRequest(error);
-        }
-
-        [HttpDelete("unlike/{dishId:guid}")]
-        public async Task<IActionResult> Unlike(Guid dishId)
-        {
-            var userId = GetUserId();
-
-            var error = await _favouriteService.UnlikeAsync(userId, dishId);
-
-            return string.IsNullOrEmpty(error) ? Ok("Блюдо успешно удалено из избранного!") : BadRequest(error);
+            return string.IsNullOrEmpty(error) ? Ok("Избранное успешно изменено!") : BadRequest(error);
         }
 
         private Guid GetUserId()

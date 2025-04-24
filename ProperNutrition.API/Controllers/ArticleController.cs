@@ -8,7 +8,7 @@ using ProperNutrition.Application.Services;
 namespace ProperNutrition.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/article")]
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
@@ -21,7 +21,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-list")]
+        [Route("list")]
         public async Task<IActionResult> GetList()
         {
             var articles = await _articleService.GetAllAsync();
@@ -30,7 +30,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody] ArticleRequest model)
         {
@@ -48,7 +48,7 @@ namespace ProperNutrition.API.Controllers
             return string.IsNullOrEmpty(error) ? Ok("Добавление новости прошло успешно!") : BadRequest(error); 
         }
 
-        [HttpPut("update/{id:guid}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ArticleRequest model)
         {
@@ -66,7 +66,7 @@ namespace ProperNutrition.API.Controllers
             return string.IsNullOrEmpty(error) ? Ok("Обновление новости прошло успешно!") : BadRequest(error);
         }
 
-        [HttpDelete("delete/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {

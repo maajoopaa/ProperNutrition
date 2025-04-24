@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace ProperNutrition.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/product")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -22,7 +22,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-list")]
+        [Route("list")]
         public async Task<IActionResult> GetList()
         {
             var products = await _productService.GetAllAsync();
@@ -39,7 +39,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-sort-list")]
+        [Route("sort-list")]
         public async Task<IActionResult> GetSortList()
         {
             var products = await _productService.GetLessCaloritAsync();
@@ -48,7 +48,7 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody] ProductRequest model)
         {
@@ -66,7 +66,7 @@ namespace ProperNutrition.API.Controllers
             return string.IsNullOrEmpty(error) ? Ok("Добавление продукта прошло успешно!") : BadRequest(error);
         }
 
-        [HttpPut("update/{id:guid}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ProductRequest model)
         {
@@ -84,7 +84,7 @@ namespace ProperNutrition.API.Controllers
             return string.IsNullOrEmpty(error) ? Ok("Обновление продукта прошло успешно!") : BadRequest(error);
         }
 
-        [HttpDelete("delete/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
