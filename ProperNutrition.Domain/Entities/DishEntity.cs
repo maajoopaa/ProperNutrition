@@ -12,8 +12,6 @@ namespace ProperNutrition.Domain.Entities
 
         public byte[] Image { get; set; } = null!;
 
-        public virtual ICollection<UserEntity> LikedBy { get; set; } = null!;
-
         public Guid CreatedById { get; set; }
 
         public virtual UserEntity CreatedBy { get; set; } = null!;
@@ -21,5 +19,7 @@ namespace ProperNutrition.Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         public virtual ICollection<DishProductEntity> Products { get; set; } = [];
+
+        public virtual ICollection<UserEntity> LikedBy { get; set; } = [];
     }
 }

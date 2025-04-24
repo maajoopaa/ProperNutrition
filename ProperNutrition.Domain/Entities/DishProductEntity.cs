@@ -9,6 +9,8 @@ namespace ProperNutrition.Domain.Entities
 {
     public class DishProductEntity
     {
+        public Guid Id { get; set; }
+
         public Guid DishId { get; set; }
 
         public virtual DishEntity Dish { get; set; } = null!;
