@@ -8,7 +8,7 @@ namespace ProperNutrition.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<DishProductEntity> builder)
         {
-            builder.HasKey(x => new { x.ProductId, x.DishId });
+            builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.Product)
                 .WithMany(p => p.Dishes)
