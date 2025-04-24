@@ -102,18 +102,24 @@ namespace ProperNutrition.API.Migrations
 
             modelBuilder.Entity("ProperNutrition.Domain.Entities.DishProductEntity", b =>
                 {
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("DishId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
-                    b.HasKey("ProductId", "DishId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DishId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("DishProducts");
                 });
