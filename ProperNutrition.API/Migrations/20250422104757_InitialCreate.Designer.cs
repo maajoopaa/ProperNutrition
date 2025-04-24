@@ -12,7 +12,7 @@ using ProperNutrition.DataAccess;
 namespace ProperNutrition.API.Migrations
 {
     [DbContext(typeof(ProperNutritionDbContext))]
-    [Migration("20250411124722_InitialCreate")]
+    [Migration("20250422104757_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -51,16 +51,16 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasMaxLength(23)
-                        .HasColumnType("character varying(23)");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Head")
                         .IsRequired()
-                        .HasMaxLength(23)
-                        .HasColumnType("character varying(23)");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("bytea");
@@ -84,8 +84,8 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(23)
-                        .HasColumnType("character varying(23)");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -93,8 +93,8 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(23)
-                        .HasColumnType("character varying(23)");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
@@ -135,8 +135,8 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(23)
-                        .HasColumnType("character varying(23)");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<double>("Fats")
                         .HasColumnType("double precision");
@@ -150,8 +150,8 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(23)
-                        .HasColumnType("character varying(23)");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 

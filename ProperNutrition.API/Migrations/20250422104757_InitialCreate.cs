@@ -16,8 +16,8 @@ namespace ProperNutrition.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Head = table.Column<string>(type: "character varying(23)", maxLength: 23, nullable: false),
-                    Body = table.Column<string>(type: "character varying(23)", maxLength: 23, nullable: false),
+                    Head = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Body = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Image = table.Column<byte[]>(type: "bytea", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -31,8 +31,8 @@ namespace ProperNutrition.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "character varying(23)", maxLength: 23, nullable: false),
-                    Description = table.Column<string>(type: "character varying(23)", maxLength: 23, nullable: false),
+                    Title = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Image = table.Column<byte[]>(type: "bytea", nullable: false),
                     Calories = table.Column<double>(type: "double precision", nullable: false),
                     Proteins = table.Column<double>(type: "double precision", nullable: false),
@@ -64,8 +64,8 @@ namespace ProperNutrition.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "character varying(23)", maxLength: 23, nullable: false),
-                    Description = table.Column<string>(type: "character varying(23)", maxLength: 23, nullable: false),
+                    Title = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Image = table.Column<byte[]>(type: "bytea", nullable: false),
                     CreatedById = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
