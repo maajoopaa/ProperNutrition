@@ -13,7 +13,8 @@ namespace ProperNutrition.Application.Mappers
             Calories = entity.Calories,
             Proteins = entity.Proteins,
             Fats = entity.Fats,
-            Carbs = entity.Carbs
+            Carbs = entity.Carbs,
+            Image = Convert.ToBase64String(entity.Image),
         };
 
         public static ProductEntity ToEntity(Product domain) => new ProductEntity
@@ -24,7 +25,8 @@ namespace ProperNutrition.Application.Mappers
             Calories = domain.Calories,
             Proteins = domain.Proteins,
             Fats = domain.Fats,
-            Carbs = domain.Carbs
+            Carbs = domain.Carbs,
+            Image = Convert.FromBase64String(domain.Image)
         };
     }
 

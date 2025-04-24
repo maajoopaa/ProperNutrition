@@ -1,5 +1,6 @@
 ﻿using ProperNutrition.Domain.Entities;
 using ProperNutrition.Domain.Models;
+using System.ComponentModel;
 
 namespace ProperNutrition.Application.Mappers
 {
@@ -10,10 +11,9 @@ namespace ProperNutrition.Application.Mappers
             Id = entity.Id,
             Title = entity.Title,
             Description = entity.Description,
-            Image = entity.Image,
+            Image = Convert.ToBase64String(entity.Image),
             CreatedAt = entity.CreatedAt,
             CreatedBy = UserMapper.ToDomainBasic(entity.CreatedBy),
-            LikedBy = entity.LikedBy.Select(UserMapper.ToDomain).ToList(),
             Products = entity.Products.Select(DishProductMapper.ToDomain).ToList()
         };
 
@@ -24,10 +24,9 @@ namespace ProperNutrition.Application.Mappers
                 Id = domain.Id,
                 Title = domain.Title,
                 Description = domain.Description,
-                Image = domain.Image,
+                Image = Convert.FromBase64String(domain.Image),
                 CreatedAt = domain.CreatedAt,
                 CreatedById = domain.CreatedBy.Id,
-                LikedBy = domain.LikedBy.Select(UserMapper.ToEntity).ToList(),
                 Products = domain.Products.Select(DishProductMapper.ToEntity).ToList()
             };
 

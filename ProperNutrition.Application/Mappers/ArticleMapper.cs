@@ -15,7 +15,7 @@ namespace ProperNutrition.Application.Mappers
             Id = entity.Id,
             Head = entity.Head,
             Body = entity.Body,
-            Image = entity.Image,
+            Image = Convert.ToBase64String(entity.Image),
             CreatedAt = entity.CreatedAt,
         };
 
@@ -24,7 +24,7 @@ namespace ProperNutrition.Application.Mappers
             Id = domain.Id,
             Head = domain.Head,
             Body = domain.Body,
-            Image = domain.Image,
+            Image = Convert.FromBase64String(domain.Image ?? ""),
             CreatedAt = domain.CreatedAt,
         };
     }
