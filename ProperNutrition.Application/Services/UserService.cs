@@ -20,6 +20,15 @@ namespace ProperNutrition.Application.Services
             _usersRepository = usersRepository;
         }
 
+        public async Task<User?> GetById(Guid id)
+        {
+            var users = await _usersRepository.GetAllAsync();
+
+            var user = users.FirstOrDefault(u => u.Id == id);
+
+            return user is not null ? UserMapper.ToDomain(user) : null;
+        }
+
         public async Task<User?> AddAsync(string username, string email, string password)
         {
             try
@@ -43,9 +52,8 @@ namespace ProperNutrition.Application.Services
 
         public async Task<UserEntity?> GetByUsername(string username)
         {
-            var users = await _usersRepository.GetAllAsync();
-
-            return users.FirstOrDefault(u => u.Username == username);
+            return (await _usersRepository.GetAllAsync())
+                .FirstOrDefault(u => u.Username == username);
         }
 
         public async Task<List<Dish>> GetFavouriteAsync(HttpContext context)

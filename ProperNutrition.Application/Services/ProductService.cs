@@ -24,17 +24,11 @@ namespace ProperNutrition.Application.Services
         {
             try
             {
-                using var memoryStream = new MemoryStream();
-
-                await model.Image.CopyToAsync(memoryStream);
-
-                var imageBytes = memoryStream.ToArray();
-
                 var entity = new ProductEntity
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    Image = imageBytes,
+                    Image = Convert.FromBase64String(model.Image),
                     Calories = model.Calories,
                     Proteins = model.Proteins,
                     Fats = model.Fats,
@@ -59,15 +53,9 @@ namespace ProperNutrition.Application.Services
 
                 if (entity is not null)
                 {
-                    using var memoryStream = new MemoryStream();
-
-                    await model.Image.CopyToAsync(memoryStream);
-
-                    var imageBytes = memoryStream.ToArray();
-
                     entity.Title = model.Title;
                     entity.Description = model.Description;
-                    entity.Image = imageBytes;
+                    entity.Image = Convert.FromBase64String(model.Image);
                     entity.Calories = model.Calories;
                     entity.Proteins = model.Proteins;
                     entity.Fats = model.Fats;

@@ -88,17 +88,11 @@ namespace ProperNutrition.Application.Services
         {
             try
             {
-                using var memoryStream = new MemoryStream();
-
-                await model.Image.CopyToAsync(memoryStream);
-
-                var imageBytes = memoryStream.ToArray();
-
                 var entity = new DishEntity
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    Image = imageBytes,
+                    Image = Convert.FromBase64String(model.Image),
                     CreatedById = createdBydId,
                     CreatedAt = DateTime.UtcNow,
                     Products = model.Products.Select(p =>
@@ -130,15 +124,10 @@ namespace ProperNutrition.Application.Services
 
                 if (entity is not null)
                 {
-                    using var memoryStream = new MemoryStream();
-
-                    await model.Image.CopyToAsync(memoryStream);
-
-                    var imageBytes = memoryStream.ToArray();
-
                     entity.Title = model.Title;
                     entity.Description = model.Description;
-                    entity.Image = imageBytes;
+                    entity.Image = Convert.FromBase64String(model.Image);
+                    entity.Products.Clear();
                     entity.Products = model.Products.Select(p =>
                     {
                         return new DishProductEntity

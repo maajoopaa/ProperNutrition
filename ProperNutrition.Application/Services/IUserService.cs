@@ -10,5 +10,6 @@ namespace ProperNutrition.Application.Services
         Task<List<Dish>> GetDishes(HttpContext context);
         Task<List<Dish>> GetFavouriteAsync(HttpContext context);
         Task<UserEntity?> GetByUsername(string username);
+        Task<User?> GetById(Guid id);
     }
 }

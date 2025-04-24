@@ -28,18 +28,13 @@ namespace ProperNutrition.Application.Services
                 var entity = new ArticleEntity
                 {
                     Head = model.Head,
-                    Body = model.Body
+                    Body = model.Body,
+                    CreatedAt = DateTime.UtcNow
                 };
 
                 if (model.Image is not null)
                 {
-                    using var memoryStream = new MemoryStream();
-
-                    await model.Image.CopyToAsync(memoryStream);
-
-                    var imageBytes = memoryStream.ToArray();
-
-                    entity.Image = imageBytes;
+                    entity.Image = Convert.FromBase64String(model.Image);
                 }
 
                 await _articlesRepository.AddAsync(entity);
@@ -60,18 +55,15 @@ namespace ProperNutrition.Application.Services
 
                 if (entity is not null)
                 {
+                    entity.Head = model.Head;
+                    entity.Body = model.Body;
+
                     if (model.Image is not null)
                     {
-                        using var memoryStream = new MemoryStream();
-
-                        await model.Image.CopyToAsync(memoryStream);
-
-                        var imageBytes = memoryStream.ToArray();
-
-                        entity.Image = imageBytes;
+                        entity.Image = Convert.FromBase64String(model.Image);
                     }
 
-                    await _articlesRepository.AddAsync(entity);
+                    await _articlesRepository.UpdateAsync(entity);
 
                     return string.Empty;
                 }

@@ -3,6 +3,7 @@ using ProperNutrition.DataAccess.Repositories;
 using ProperNutrition.Domain.Entities;
 using ProperNutrition.Application.Mappers;
 using System.ComponentModel.DataAnnotations;
+using ProperNutrition.Application.Models;
 
 namespace ProperNutrition.Application.Services.AccountService
 {
@@ -15,7 +16,7 @@ namespace ProperNutrition.Application.Services.AccountService
             _userService = userService;
         }
 
-        public async Task<string> Register(string username, string email, string password)
+        public async Task<AccountResponse?> Register(string username, string email, string password)
         {
             string passwordHash = PasswordHasher.Hash(password);
 
@@ -23,24 +24,24 @@ namespace ProperNutrition.Application.Services.AccountService
 
             if(user is not null)
             {
-                var token = await Login(username, password);
-
-                return token;
+                return await Login(username, password);
             }
 
-            return string.Empty;
+            return null;
         }
 
-        public async Task<string> Login(string username, string password)
+        public async Task<AccountResponse?> Login(string username, string password)
         {
             var user = await _userService.GetByUsername(username);
 
             if (user is not null && PasswordHasher.Verify(password,user.Password))
             {
-                return JwtService.GenerateToken(UserMapper.ToDomain(user));
+                var token = JwtService.GenerateToken(UserMapper.ToDomain(user));
+
+                return new AccountResponse{ Token = token, User = UserMapper.ToDomain(user) };
             }
 
-            return string.Empty;
+            return null;
         }
     }
 }

@@ -31,45 +31,18 @@ namespace ProperNutrition.Application.Services
                 {
                     if (dish is not null)
                     {
-                        dish.LikedBy.Add(user);
-
-                        await _dishesRepository.UpdateAsync(dish);
-
-                        return string.Empty;
-                    }
-
-                    return "Такого блюда не существует!";
-                }
-
-                return "Такого пользователя не существует!";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        public async Task<string> UnlikeAsync(Guid userId, Guid dishId)
-        {
-            try
-            {
-                var dish = await _dishesRepository.GetAsync(dishId);
-                var user = await _usersRepository.GetAsync(userId);
-
-                if (user is not null)
-                {
-                    if (dish is not null)
-                    {
-                        if (dish.LikedBy.Contains(user))
+                        if (user.Favourite.Contains(dish))
                         {
-                            dish.LikedBy.Remove(user);
-
-                            await _dishesRepository.UpdateAsync(dish);
-
-                            return string.Empty;
+                            user.Favourite.Remove(dish);
+                        }
+                        else
+                        { 
+                            user.Favourite.Add(dish);
                         }
 
-                        return "У этого пользователя отсутвует отметка от этого пользователя!";
+                        await _usersRepository.UpdateAsync(user);
+
+                        return string.Empty;
                     }
 
                     return "Такого блюда не существует!";

@@ -6,6 +6,5 @@ namespace ProperNutrition.Application.Services
     {
         Task<List<Dish>> GetAllAsync(Guid userId);
         Task<string> LikeAsync(Guid userId, Guid dishId);
-        Task<string> UnlikeAsync(Guid userId, Guid dishId);
     }
 }
