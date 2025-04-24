@@ -14,13 +14,11 @@ namespace ProperNutrition.Domain.Models
 
         public string Description { get; set; } = null!;
 
-        public byte[] Image { get; set; } = null!;
+        public string Image { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; }
 
         public User CreatedBy { get; set; } = null!;
-
-        public List<User> LikedBy { get; set; } = [];
 
         public List<DishProduct> Products { get; set; } = [];
     }

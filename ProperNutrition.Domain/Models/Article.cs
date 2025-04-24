@@ -14,7 +14,7 @@ namespace ProperNutrition.Domain.Models
 
         public string Body { get; set; } = null!;
 
-        public byte[]? Image { get; set; }
+        public string? Image { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }

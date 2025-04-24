@@ -14,6 +14,8 @@ namespace ProperNutrition.Domain.Models
 
         public string Description { get; set; } = null!;
 
+        public string Image { get; set; } = null!;
+
         public double Calories { get; set; } = 0;
 
         public double Proteins { get; set; } = 0;
