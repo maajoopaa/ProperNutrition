@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ProperNutrition.Application.Models;
 using ProperNutrition.Domain.Entities;
 using ProperNutrition.Domain.Models;
 
@@ -11,5 +12,6 @@ namespace ProperNutrition.Application.Services
         Task<List<Dish>> GetFavouriteAsync(HttpContext context);
         Task<UserEntity?> GetByUsername(string username);
         Task<User?> GetById(Guid id);
+        Task<string> UpdateAsync(Guid id, UserRequest model);
     }
 }

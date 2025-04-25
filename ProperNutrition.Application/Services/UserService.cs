@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ProperNutrition.Application.Mappers;
+using ProperNutrition.Application.Models;
+using ProperNutrition.Application.Services.AccountService;
 using ProperNutrition.DataAccess.Repositories;
 using ProperNutrition.Domain.Entities;
 using ProperNutrition.Domain.Models;
@@ -47,6 +49,36 @@ namespace ProperNutrition.Application.Services
             catch
             {
                 return null;
+            }
+        }
+
+        public async Task<string> UpdateAsync(Guid id, UserRequest model)
+        {
+            try
+            {
+                var entity = await _usersRepository.GetAsync(id);
+
+                if(entity is not null)
+                {
+                    if(PasswordHasher.Verify(model.CurrentPassword, entity.Password))
+                    {
+                        entity.Username = string.IsNullOrEmpty(model.Username) ? entity.Username : model.Username;
+                        entity.Email = string.IsNullOrEmpty(model.Email) ? entity.Email : model.Email;
+                        entity.Password = string.IsNullOrEmpty(model.Password) ? entity.Password : PasswordHasher.Hash(model.Password);
+
+                        await _usersRepository.UpdateAsync(entity);
+
+                        return string.Empty;
+                    }
+
+                    return "Пароль введен неверно!";
+                }
+
+                return "Такого пользователя не существует!";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
             }
         }
 
