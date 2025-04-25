@@ -62,6 +62,15 @@ namespace ProperNutrition.API.Controllers
             return result is not null ? Ok(result) : BadRequest("Пользователь с таким логином или почтой уже существует!");
         }
 
+        [Authorize]
+        [HttpPost("{id:guid}")]
+        public async Task<IActionResult> ChangeData(Guid id, [FromBody] UserRequest model)
+        {
+            var result = await _userService.UpdateAsync(id, model);
+
+            return string.IsNullOrEmpty(result) ? Ok() : BadRequest(result);
+        }
+
         [HttpGet("")]
         public async Task<IActionResult> Account()
         {
