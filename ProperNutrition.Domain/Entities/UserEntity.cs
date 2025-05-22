@@ -21,5 +21,13 @@ namespace ProperNutrition.Domain.Entities
         public virtual ICollection<DishEntity> Dishes { get; set; } = [];
 
         public virtual ICollection<DishEntity> Favourite { get; set; } = [];
+
+        public bool IsConfirmed { get; set; } = false;
+
+        public bool? Gender { get; set; }
+
+        public double? Weight { get; set; }
+
+        public double? Height { get; set; }
     }
 }

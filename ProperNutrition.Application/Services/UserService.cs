@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.IdentityModel.Abstractions;
 using ProperNutrition.Application.Mappers;
 using ProperNutrition.Application.Models;
 using ProperNutrition.Application.Services.AccountService;
@@ -24,9 +26,7 @@ namespace ProperNutrition.Application.Services
 
         public async Task<User?> GetById(Guid id)
         {
-            var users = await _usersRepository.GetAllAsync();
-
-            var user = users.FirstOrDefault(u => u.Id == id);
+            var user = await _usersRepository.GetAsync(id);
 
             return user is not null ? UserMapper.ToDomain(user) : null;
         }
@@ -58,9 +58,9 @@ namespace ProperNutrition.Application.Services
             {
                 var entity = await _usersRepository.GetAsync(id);
 
-                if(entity is not null)
+                if (entity is not null)
                 {
-                    if(PasswordHasher.Verify(model.CurrentPassword, entity.Password))
+                    if (PasswordHasher.Verify(model.CurrentPassword, entity.Password))
                     {
                         entity.Username = string.IsNullOrEmpty(model.Username) ? entity.Username : model.Username;
                         entity.Email = string.IsNullOrEmpty(model.Email) ? entity.Email : model.Email;
@@ -76,7 +76,33 @@ namespace ProperNutrition.Application.Services
 
                 return "Такого пользователя не существует!";
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> UpdateParametrsAsync(Guid id, ParametrsRequest model)
+        {
+            try
+            {
+                var entity = await _usersRepository.GetAsync(id);
+
+                if (entity is not null)
+                {
+                    entity.IsConfirmed = model.IsConfirmed;
+                    entity.Gender = model.Gender;
+                    entity.Weight = model.Weight;
+                    entity.Height = model.Height;
+
+                    await _usersRepository.UpdateAsync(entity);
+
+                    return string.Empty;
+                }
+
+                return "Такого пользователя не существует!";
+            }
+            catch (Exception ex)
             {
                 return ex.Message;
             }

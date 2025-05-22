@@ -7,8 +7,8 @@ namespace ProperNutrition.Application.Services
     {
         Task<string> AddAsync(ProductRequest model);
         Task<string> DeleteAsync(Guid id);
+        Task<ProductListResponse> GetAllAsync(PaginationModel model);
         Task<List<Product>> GetAllAsync();
-        Task<List<Product>> GetLessCaloritAsync();
         Task<List<Product>> SearchAsync(string query);
         Task<string> UpdateAsync(Guid id, ProductRequest model);
     }

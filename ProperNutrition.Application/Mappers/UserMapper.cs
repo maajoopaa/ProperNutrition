@@ -12,7 +12,11 @@ namespace ProperNutrition.Application.Mappers
             Email = entity.Email,
             IsAdmin = entity.IsAdmin != 0,
             CreatedDishes = entity.Dishes?.Select(DishMapper.ToDomain).ToList() ?? new(),
-            FavouriteDishes = entity.Favourite?.Select(DishMapper.ToDomain).ToList() ?? new()
+            FavouriteDishes = entity.Favourite?.Select(DishMapper.ToDomain).ToList() ?? new(),
+            IsConfirmed = entity.IsConfirmed,
+            Gender= entity.Gender,
+            Weight= entity.Weight,
+            Height= entity.Height,
         };
 
         public static User ToDomainBasic(UserEntity entity) => new User
@@ -20,7 +24,11 @@ namespace ProperNutrition.Application.Mappers
             Id = entity.Id,
             Username = entity.Username,
             Email = entity.Email,
-            IsAdmin = entity.IsAdmin != 0
+            IsAdmin = entity.IsAdmin != 0,
+            IsConfirmed = entity.IsConfirmed,
+            Gender = entity.Gender,
+            Weight = entity.Weight,
+            Height = entity.Height,
         };
 
         public static UserEntity ToEntity(User domain) => new UserEntity
@@ -28,7 +36,11 @@ namespace ProperNutrition.Application.Mappers
             Id = domain.Id,
             Username = domain.Username,
             Email = domain.Email,
-            IsAdmin = domain.IsAdmin ? (byte)1 : (byte)0
+            IsAdmin = domain.IsAdmin ? (byte)1 : (byte)0,
+            IsConfirmed = domain.IsConfirmed,
+            Gender = domain.Gender,
+            Weight = domain.Weight,
+            Height = domain.Height,
         };
     }
 

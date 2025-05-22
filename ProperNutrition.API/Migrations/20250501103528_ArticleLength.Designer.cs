@@ -12,8 +12,8 @@ using ProperNutrition.DataAccess;
 namespace ProperNutrition.API.Migrations
 {
     [DbContext(typeof(ProperNutritionDbContext))]
-    [Migration("20250422104757_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250501103528_ArticleLength")]
+    partial class ArticleLength
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,16 +51,16 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Head")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("bytea");
@@ -105,18 +105,24 @@ namespace ProperNutrition.API.Migrations
 
             modelBuilder.Entity("ProperNutrition.Domain.Entities.DishProductEntity", b =>
                 {
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("DishId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
-                    b.HasKey("ProductId", "DishId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DishId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("DishProducts");
                 });

@@ -12,8 +12,8 @@ using ProperNutrition.DataAccess;
 namespace ProperNutrition.API.Migrations
 {
     [DbContext(typeof(ProperNutritionDbContext))]
-    [Migration("20250423115342_DishProduct")]
-    partial class DishProduct
+    [Migration("20250514170017_DishCategory")]
+    partial class DishCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,16 +51,16 @@ namespace ProperNutrition.API.Migrations
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Head")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("bytea");
@@ -70,10 +70,28 @@ namespace ProperNutrition.API.Migrations
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("ProperNutrition.Domain.Entities.CategoryEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("ProperNutrition.Domain.Entities.DishEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -97,6 +115,8 @@ namespace ProperNutrition.API.Migrations
                         .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatedById");
 
@@ -174,8 +194,17 @@ namespace ProperNutrition.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool?>("Gender")
+                        .HasColumnType("boolean");
+
+                    b.Property<double?>("Height")
+                        .HasColumnType("double precision");
+
                     b.Property<byte>("IsAdmin")
                         .HasColumnType("smallint");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -184,6 +213,9 @@ namespace ProperNutrition.API.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -213,11 +245,19 @@ namespace ProperNutrition.API.Migrations
 
             modelBuilder.Entity("ProperNutrition.Domain.Entities.DishEntity", b =>
                 {
+                    b.HasOne("ProperNutrition.Domain.Entities.CategoryEntity", "Category")
+                        .WithMany("Dishes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProperNutrition.Domain.Entities.UserEntity", "CreatedBy")
                         .WithMany("Dishes")
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
                 });
@@ -239,6 +279,11 @@ namespace ProperNutrition.API.Migrations
                     b.Navigation("Dish");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ProperNutrition.Domain.Entities.CategoryEntity", b =>
+                {
+                    b.Navigation("Dishes");
                 });
 
             modelBuilder.Entity("ProperNutrition.Domain.Entities.DishEntity", b =>

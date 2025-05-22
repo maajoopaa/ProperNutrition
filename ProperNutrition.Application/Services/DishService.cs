@@ -1,8 +1,10 @@
-﻿using ProperNutrition.Application.Mappers;
+﻿using Microsoft.Extensions.Logging;
+using ProperNutrition.Application.Mappers;
 using ProperNutrition.Application.Models;
 using ProperNutrition.DataAccess.Repositories;
 using ProperNutrition.Domain.Entities;
 using ProperNutrition.Domain.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +28,11 @@ namespace ProperNutrition.Application.Services
             try
             {
                 var dishes = (await _dishesRepository.GetAllAsync())!
+                    .Where(x => x.CreatedBy.IsAdmin == 1)
                     .OrderByDescending(d => d.LikedBy.Count)
                     .ToList();
 
-                if(dishes is not null)
+                if (dishes is not null)
                 {
                     return dishes.Select(DishMapper.ToDomain).Take(dishes.Count < 5 ? dishes.Count : 5).ToList();
                 }
@@ -103,7 +106,8 @@ namespace ProperNutrition.Application.Services
                             Weight = p.Weight
                         };
                     })
-                    .ToList()
+                    .ToList(),
+                    CategoryId = model.CategoryId,
                 };
 
                 await _dishesRepository.AddAsync(entity);
@@ -136,6 +140,7 @@ namespace ProperNutrition.Application.Services
                             Weight = p.Weight
                         };
                     }).ToList();
+                    entity.CategoryId = model.CategoryId;
 
                     await _dishesRepository.UpdateAsync(entity);
 
@@ -182,6 +187,65 @@ namespace ProperNutrition.Application.Services
                     calories += product.Product.Calories;
                 }
 
+                Log.Information("Calories {calories}", calories);
+
+                return calories;
+            }
+
+            return 0;
+        }
+
+        private double GetProteins(DishEntity entity)
+        {
+            if (entity is not null)
+            {
+                var proteins = 0.0;
+
+                foreach (var product in entity.Products)
+                {
+                    proteins += product.Product.Proteins;
+                }
+
+                Log.Information("Proteins {proteins}", proteins);
+
+                return proteins;
+            }
+
+            return 0;
+        }
+
+        private double GetFats(DishEntity entity)
+        {
+            if (entity is not null)
+            {
+                var calories = 0.0;
+
+                foreach (var product in entity.Products)
+                {
+                    calories += product.Product.Fats;
+                }
+
+                Log.Information("Fats {calories}", calories);
+
+                return calories;
+            }
+
+            return 0;
+        }
+
+        private double GetCarbs(DishEntity entity)
+        {
+            if (entity is not null)
+            {
+                var calories = 0.0;
+
+                foreach (var product in entity.Products)
+                {
+                    calories += product.Product.Carbs;
+                }
+
+                Log.Information("Carbs {calories}", calories);
+
                 return calories;
             }
 
@@ -196,7 +260,70 @@ namespace ProperNutrition.Application.Services
 
                 if (entities is not null)
                 {
-                    var orderedEntities = entities.OrderByDescending(e => GetCalories(e)).ToList();
+                    var orderedEntities = entities.OrderBy(e => GetCalories(e)).ToList();
+
+                    return orderedEntities.Select(DishMapper.ToDomain).ToList();
+                }
+
+                return [];
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        public async Task<List<Dish>> GetLessProteinsAsync()
+        {
+            try
+            {
+                var entities = await _dishesRepository.GetAllAsync();
+
+                if (entities is not null)
+                {
+                    var orderedEntities = entities.OrderBy(e => GetProteins(e)).ToList();
+
+                    return orderedEntities.Select(DishMapper.ToDomain).ToList();
+                }
+
+                return [];
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        public async Task<List<Dish>> GetLessCarbsAsync()
+        {
+            try
+            {
+                var entities = await _dishesRepository.GetAllAsync();
+
+                if (entities is not null)
+                {
+                    var orderedEntities = entities.OrderBy(e => GetCarbs(e)).ToList();
+
+                    return orderedEntities.Select(DishMapper.ToDomain).ToList();
+                }
+
+                return [];
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        public async Task<List<Dish>> GetLessFatsAsync()
+        {
+            try
+            {
+                var entities = await _dishesRepository.GetAllAsync();
+
+                if (entities is not null)
+                {
+                    var orderedEntities = entities.OrderBy(e => GetFats(e)).ToList();
 
                     return orderedEntities.Select(DishMapper.ToDomain).ToList();
                 }
@@ -225,7 +352,7 @@ namespace ProperNutrition.Application.Services
             }
         }
 
-        public async Task<List<Dish>> GetAllAsync()
+        public async Task<DishListResponse> GetAllAsync(PaginationModel model)
         {
             try
             {
@@ -233,15 +360,38 @@ namespace ProperNutrition.Application.Services
 
                 if (dishEntities is not null)
                 {
-                    return dishEntities.Select(DishMapper.ToDomain).ToList();
+                    var count = dishEntities.Count;
+
+                    var result = dishEntities
+                        .Where(x => x.CreatedBy.IsAdmin == 1)
+                        .Skip((model.Page - 1) * model.PageSize)
+                        .Take(model.PageSize)
+                        .Select(DishMapper.ToDomain)
+                        .ToList();
+
+                    return new DishListResponse
+                    {
+                        Dishes = result,
+                        Total = count
+                    };
                 }
 
-                return [];
+                return new DishListResponse();
             }
             catch
             {
-                return [];
+                return new DishListResponse();
             }
+
+            //var dishes = (await _dishesRepository.GetAllAsync())!
+            //    .Where(x => x.CreatedBy.IsAdmin == 1);
+
+            //if(dishes is not null)
+            //{
+            //    return dishes.Select(DishMapper.ToDomain).ToList();
+            //}
+
+            //return [];
         }
     }
 }

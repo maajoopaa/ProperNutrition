@@ -1,4 +1,11 @@
 ﻿namespace ProperNutrition.Application.Models
 {
-    public record RegisterUserRequest(string Username, string Email, string Password);
+    public class RegisterUserRequest
+    {
+        public string Username { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
+
+        public string Password { get; set; } = null!;
+    }
 }

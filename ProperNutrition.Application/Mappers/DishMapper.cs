@@ -14,7 +14,12 @@ namespace ProperNutrition.Application.Mappers
             Image = Convert.ToBase64String(entity.Image),
             CreatedAt = entity.CreatedAt,
             CreatedBy = UserMapper.ToDomainBasic(entity.CreatedBy),
-            Products = entity.Products.Select(DishProductMapper.ToDomain).ToList()
+            Products = entity.Products.Select(DishProductMapper.ToDomain).ToList(),
+            Category = new Category
+            {
+                Id = entity.Category.Id,
+                Title = entity.Category.Title,
+            }
         };
 
         public static DishEntity ToEntity(Dish domain)
@@ -27,7 +32,8 @@ namespace ProperNutrition.Application.Mappers
                 Image = Convert.FromBase64String(domain.Image),
                 CreatedAt = domain.CreatedAt,
                 CreatedById = domain.CreatedBy.Id,
-                Products = domain.Products.Select(DishProductMapper.ToEntity).ToList()
+                Products = domain.Products.Select(DishProductMapper.ToEntity).ToList(),
+                CategoryId = domain.Category.Id,
             };
 
             return dishEntity;

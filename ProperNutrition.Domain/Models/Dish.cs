@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProperNutrition.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,5 +22,7 @@ namespace ProperNutrition.Domain.Models
         public User CreatedBy { get; set; } = null!;
 
         public List<DishProduct> Products { get; set; } = [];
+
+        public Category Category { get; set; } = null!;
     }
 }

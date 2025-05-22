@@ -13,5 +13,7 @@ namespace ProperNutrition.Application.Models
         public string Image { get; set; } = null!;
 
         public List<DishProductRequest> Products { get; set; } = [];
+
+        public Guid CategoryId { get; set; }
     }
 }

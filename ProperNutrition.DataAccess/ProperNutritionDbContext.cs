@@ -20,6 +20,7 @@ namespace ProperNutrition.DataAccess
         public DbSet<DishEntity> Dishes { get; set; }
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<DishProductEntity> DishProducts { get; set; }
+        public DbSet<CategoryEntity> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

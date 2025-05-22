@@ -18,6 +18,10 @@ namespace ProperNutrition.Domain.Entities
 
         public DateTime CreatedAt { get; set; }
 
+        public Guid CategoryId { get; set; }
+
+        public virtual CategoryEntity Category { get; set; } = null!;
+
         public virtual ICollection<DishProductEntity> Products { get; set; } = [];
 
         public virtual ICollection<UserEntity> LikedBy { get; set; } = [];

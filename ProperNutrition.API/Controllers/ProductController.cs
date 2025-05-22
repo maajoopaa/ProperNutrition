@@ -21,6 +21,15 @@ namespace ProperNutrition.API.Controllers
             _validator = validator;
         }
 
+        [HttpPost]
+        [Route("list")]
+        public async Task<IActionResult> GetList([FromBody] PaginationModel model)
+        {
+            var products = await _productService.GetAllAsync(model);
+
+            return products is not null ? Ok(products) : BadRequest();
+        }
+
         [HttpGet]
         [Route("list")]
         public async Task<IActionResult> GetList()
@@ -34,15 +43,6 @@ namespace ProperNutrition.API.Controllers
         public async Task<IActionResult> Search(string query)
         {
             var products = await _productService.SearchAsync(query);
-
-            return products is not null ? Ok(products) : BadRequest();
-        }
-
-        [HttpGet]
-        [Route("sort-list")]
-        public async Task<IActionResult> GetSortList()
-        {
-            var products = await _productService.GetLessCaloritAsync();
 
             return products is not null ? Ok(products) : BadRequest();
         }

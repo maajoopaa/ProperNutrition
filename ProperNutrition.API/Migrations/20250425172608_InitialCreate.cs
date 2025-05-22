@@ -109,13 +109,14 @@ namespace ProperNutrition.API.Migrations
                 name: "DishProducts",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DishId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     Weight = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DishProducts", x => new { x.ProductId, x.DishId });
+                    table.PrimaryKey("PK_DishProducts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DishProducts_Dishes_DishId",
                         column: x => x.DishId,
@@ -144,6 +145,11 @@ namespace ProperNutrition.API.Migrations
                 name: "IX_DishProducts_DishId",
                 table: "DishProducts",
                 column: "DishId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DishProducts_ProductId",
+                table: "DishProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",

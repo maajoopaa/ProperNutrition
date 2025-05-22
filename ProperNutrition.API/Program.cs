@@ -9,6 +9,7 @@ using ProperNutrition.Application.Services;
 using ProperNutrition.Application.Models;
 using ProperNutrition.Application.Validator;
 using System.Text.Json.Serialization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,10 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
 //auth
 builder.Services.AddAuthorization();
@@ -43,6 +48,7 @@ builder.Services.AddTransient<IArticlesRepository, ArticlesRepository>();
 builder.Services.AddTransient<IDishesRepository, DishesRepository>();
 builder.Services.AddTransient<IDishProductsRepository, DishProductsRepository>();
 builder.Services.AddTransient<IProductsRepository, ProductsRepository>();
+builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 
 //services
 builder.Services.AddTransient<IAccountService, AccountService>();
@@ -51,6 +57,7 @@ builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IDishService, DishService>();
 builder.Services.AddTransient<IArticleService, ArticleService>();
 builder.Services.AddTransient<IFavouriteService, FavouriteService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 
 //validator
 builder.Services.AddTransient<IValidator<LoginUserRequest>, LoginUserRequestValidator>();
@@ -58,6 +65,7 @@ builder.Services.AddTransient<IValidator<RegisterUserRequest>, RegisterUserReque
 builder.Services.AddTransient<IValidator<ProductRequest>, ProductRequestValidator>();
 builder.Services.AddTransient<IValidator<DishRequest>, DishRequestValidator>();
 builder.Services.AddTransient<IValidator<ArticleRequest>, ArticleRequestValidator>();
+builder.Services.AddTransient<IValidator<ParametrsRequest>, ParametrsRequestValidator>();
 
 //db
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;

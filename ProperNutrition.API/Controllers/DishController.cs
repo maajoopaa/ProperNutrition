@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProperNutrition.Application.Models;
 using ProperNutrition.Application.Services;
+using ProperNutrition.DataAccess;
 using System.Security.Claims;
 
 namespace ProperNutrition.API.Controllers
@@ -14,18 +15,20 @@ namespace ProperNutrition.API.Controllers
     {
         private readonly IValidator<DishRequest> _validator;
         private readonly IDishService _dishService;
+        private readonly ProperNutritionDbContext context;
 
-        public DishController(IValidator<DishRequest> validator, IDishService dishService)
+        public DishController(IValidator<DishRequest> validator, IDishService dishService, ProperNutritionDbContext context)
         {
             _validator = validator;
             _dishService = dishService;
+            this.context = context;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("list")]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList([FromBody] PaginationModel model)
         {
-            var dishes = await _dishService.GetAllAsync();
+            var dishes = await _dishService.GetAllAsync(model);
 
             return dishes is not null ? Ok(dishes) : BadRequest();
         }
@@ -40,10 +43,37 @@ namespace ProperNutrition.API.Controllers
         }
 
         [HttpGet]
-        [Route("sort-list")]
-        public async Task<IActionResult> GetSortList()
+        [Route("calories-sort")]
+        public async Task<IActionResult> GetCaloriesSort()
         {
             var dishes = await _dishService.GetLessCaloritAsync();
+
+            return dishes is not null ? Ok(dishes) : BadRequest();
+        }
+
+        [HttpGet]
+        [Route("proteins-sort")]
+        public async Task<IActionResult> GetProteinsSort()
+        {
+            var dishes = await _dishService.GetLessProteinsAsync();
+
+            return dishes is not null ? Ok(dishes) : BadRequest();
+        }
+
+        [HttpGet]
+        [Route("carbs-sort")]
+        public async Task<IActionResult> GetCarbsSort()
+        {
+            var dishes = await _dishService.GetLessCarbsAsync();
+
+            return dishes is not null ? Ok(dishes) : BadRequest();
+        }
+
+        [HttpGet]
+        [Route("fats-sort")]
+        public async Task<IActionResult> GetFatsSort()
+        {
+            var dishes = await _dishService.GetLessFatsAsync();
 
             return dishes is not null ? Ok(dishes) : BadRequest();
         }

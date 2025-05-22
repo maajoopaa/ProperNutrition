@@ -95,22 +95,6 @@ namespace ProperNutrition.Application.Services
             }
         }
 
-        public async Task<List<Product>> GetLessCaloritAsync()
-        {
-            try
-            {
-                var productEntities = (await _productsRepository.GetAllAsync())!
-                .DistinctBy(p => p.Calories)
-                .ToList();
-
-                return productEntities.Select(ProductMapper.ToDomain).ToList();
-            }
-            catch
-            {
-                return [];
-            }
-        }
-
         public async Task<List<Product>> SearchAsync(string query)
         {
             try
@@ -127,23 +111,40 @@ namespace ProperNutrition.Application.Services
             }
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<ProductListResponse> GetAllAsync(PaginationModel model)
         {
             try
             {
                 var productEntities = await _productsRepository.GetAllAsync();
 
-                if (productEntities is not null)
+                if(productEntities is not null)
                 {
-                    return productEntities.Select(ProductMapper.ToDomain).ToList();
+                    var result = productEntities
+                    .Skip((model.Page - 1) * model.PageSize)
+                    .Take(model.PageSize)
+                    .Select(ProductMapper.ToDomain)
+                    .ToList();
+
+                    var count = productEntities.Count;
+
+                    return new ProductListResponse
+                    {
+                        Products = result,
+                        Total = count
+                    };
                 }
 
-                return [];
+                return new ProductListResponse();
             }
             catch
             {
-                return [];
+                return new ProductListResponse();
             }
+        }
+
+        public async Task<List<Product>> GetAllAsync()
+        {
+            return (await _productsRepository.GetAllAsync())!.Select(ProductMapper.ToDomain).ToList();
         }
     }
 }

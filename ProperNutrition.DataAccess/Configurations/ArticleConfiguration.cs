@@ -16,11 +16,11 @@ namespace ProperNutrition.DataAccess.Configurations
             builder.HasKey(a => a.Id);
 
             builder.Property(a => a.Head)
-                .HasMaxLength(30)
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(a => a.Body)
-                .HasMaxLength(150)
+                .HasMaxLength(500)
                 .IsRequired();
         }
     }

@@ -19,5 +19,13 @@ namespace ProperNutrition.Domain.Models
         public List<Dish> CreatedDishes { get; set; } = new();
 
         public List<Dish> FavouriteDishes { get; set; } = new();
+
+        public bool IsConfirmed { get; set; } = false;
+
+        public bool? Gender { get; set; }
+
+        public double? Weight { get; set; }
+
+        public double? Height { get; set; }
     }
 }

@@ -20,6 +20,10 @@ namespace ProperNutrition.DataAccess.Configurations
 
             builder.Property(d => d.Image)
                 .IsRequired();
+
+            builder.HasOne(x => x.Category)
+                .WithMany(x => x.Dishes)
+                .HasForeignKey(x => x.CategoryId);
         }
     }
 }
